@@ -21,6 +21,9 @@ import '@angularclass/hmr';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
+import 'hammerjs';
+import "./assets/css/theme.scss";
+
 if ('production' === ENV) {
   // Production
 

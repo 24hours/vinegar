@@ -1,39 +1,55 @@
-import { Component } from '@angular/core';
-
-import { AppState } from '../app.service';
-import { Title } from './title';
-import { XLarge } from './x-large';
+import { Component, Optional } from '@angular/core';
+import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 
 @Component({
-  // The selector is what angular internally uses
-  // for `document.querySelectorAll(selector)` in our index.html
-  // where, in this case, selector is the string 'home'
-  selector: 'home',  // <home></home>
-  // We need to tell Angular's Dependency Injection which providers are in our app.
-  providers: [
-    Title
-  ],
-  // Our list of styles in our component. We may add more to compose many styles together
+  selector: 'home',
   styleUrls: [ './home.component.css' ],
-  // Every Angular template is first compiled by the browser before Angular runs it's compiler
   templateUrl: './home.component.html'
 })
 export class HomeComponent {
-  // Set our default values
-  localState = { value: '' };
-  // TypeScript public modifiers
-  constructor(public appState: AppState, public title: Title) {
+    progress: number = 0;
+    isDarkTheme: boolean = false;
+    lastDialogResult: string;
 
-  }
+    foods: any[] = [
+      {name: 'Pizza', rating: 'Excellent'},
+      {name: 'Burritos', rating: 'Great'},
+      {name: 'French fries', rating: 'Pretty good'},
+    ];
 
-  ngOnInit() {
-    console.log('hello `Home` component');
-    // this.title.getData().subscribe(data => this.data = data);
-  }
+    constructor(private _dialog: MdDialog, private _snackbar: MdSnackBar) {
+     // Update the value for the progress-bar on an interval.
+     setInterval(() => {
+       this.progress = (this.progress + Math.floor(Math.random() * 4) + 1) % 100;
+     }, 200);
+   }
 
-  submitState(value: string) {
-    console.log('submitState', value);
-    this.appState.set('value', value);
-    this.localState.value = '';
-  }
+   openDialog() {
+     let dialogRef = this._dialog.open(DialogContent);
+
+     dialogRef.afterClosed().subscribe(result => {
+       this.lastDialogResult = result;
+     })
+   }
+
+   showSnackbar() {
+     this._snackbar.open('YUM SNACKS', 'CHEW');
+   }
+}
+
+
+@Component({
+  template: `
+    <p>This is a dialog</p>
+    <p>
+      <label>
+        This is a text box inside of a dialog.
+        <input #dialogInput>
+      </label>
+    </p>
+    <p> <button md-button (click)="dialogRef.close(dialogInput.value)">CLOSE</button> </p>
+  `,
+})
+export class DialogContent {
+  constructor(@Optional() public dialogRef: MdDialogRef<DialogContent>) { }
 }
