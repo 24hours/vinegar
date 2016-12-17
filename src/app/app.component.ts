@@ -1,36 +1,30 @@
-/*
- * Angular 2 decorators and services
- */
 import { Component, ViewEncapsulation } from '@angular/core';
-
+import * as PouchDB from 'pouchdb';
 import { AppState } from './app.service';
 
-/*
- * App Component
- * Top Level Component
- */
 @Component({
   selector: 'app',
-  encapsulation: ViewEncapsulation.None,
-  styleUrls: [
-    './app.component.css'
-  ],
+  styleUrls: [ './app.component.css' ],
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  angularclassLogo = 'assets/img/angularclass-avatar.png';
-  name = 'Angular 2 Webpack Starter';
-  url = 'https://twitter.com/AngularClass';
+    angularclassLogo = 'assets/img/angularclass-avatar.png';
+    name = 'Angular 2 Webpack Starter';
+    url = 'https://twitter.com/AngularClass';
 
-  constructor(
-    public appState: AppState) {
+    private menus: Array<any> = [
+        {name: "Home", icon: "home", link: "home"},
+        {name: "Material", icon: "view_agenda", link: "material"},
 
-  }
+    ]
+    constructor(
+        public appState: AppState) {
 
-  ngOnInit() {
-    console.log('Initial App State', this.appState.state);
-  }
+    }
 
+    ngOnInit() {
+
+    }
 }
 
 /*

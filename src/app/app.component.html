@@ -1,7 +1,15 @@
-<md-sidenav-layout [class.m2app-dark]="isDarkTheme">
-
-  <md-sidenav #sidenav mode="side" class="app-sidenav">
-    Sidenav
+<md-sidenav-layout [class.m2app-dark]="isDarkTheme" [style.height.%]="100">
+    <md-sidenav #sidenav mode="side" class="app-sidenav">
+        <md-nav-list>
+            <md-list-item *ngFor="let menu of menus"
+                [routerLink]="menu.link"
+                [routerLinkActive]="['active']">
+                <md-icon>{{ menu.icon }}</md-icon>
+                <div *ngIf="!showIconOnly">
+                    <span>{{ menu.name }}</span>
+                </div>
+            </md-list-item>
+        </md-nav-list>
   </md-sidenav>
 
   <md-toolbar color="primary">
@@ -9,7 +17,7 @@
       <i class="material-icons app-toolbar-menu">menu</i>
     </button>
 
-    Angular Material2 Example App
+    Vinegar
 
     <span class="app-toolbar-filler"></span>
     <button md-button (click)="isDarkTheme = !isDarkTheme">TOGGLE DARK THEME</button>
@@ -22,5 +30,5 @@
 </md-sidenav-layout>
 
 <span class="app-action" [class.m2app-dark]="isDarkTheme">
-  <button md-fab><md-icon>check circle</md-icon></button>
+  <button md-fab><md-icon>add</md-icon></button>
 </span>
