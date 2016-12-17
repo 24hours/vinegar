@@ -2,3 +2,14 @@
 h1{
     background : green;
 }
+
+md-card {
+    margin-bottom: 10px
+}
+
+.app-action {
+  display: inline-block;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}

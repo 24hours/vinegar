@@ -15,7 +15,7 @@ import { ROUTES } from './app.routes';
 import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState } from './app.service';
-import { HomeComponent } from './home';
+import { HomeComponent, DataDialog } from './home';
 import { MaterialComponent } from './material';
 import { AboutComponent } from './about';
 import { NoContentComponent } from './no-content';
@@ -35,6 +35,7 @@ const APP_PROVIDERS = [
     AppComponent,
     AboutComponent,
     HomeComponent,
+    DataDialog,
     MaterialComponent,
     NoContentComponent,
   ],
@@ -48,6 +49,9 @@ const APP_PROVIDERS = [
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
     APP_PROVIDERS
-  ]
+],
+entryComponents: [
+    DataDialog
+  ],
 })
 export class AppModule {}
