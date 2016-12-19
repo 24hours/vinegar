@@ -15,7 +15,10 @@ import { ROUTES } from './app.routes';
 import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState } from './app.service';
-import { HomeComponent, DataDialog } from './home';
+import { DatasetComponent } from './dataset/dataset.component';
+import { DatasetService } from './dataset/dataset.service';
+import { DatasetDialog } from './dialog/dataset/dataset.dialog';
+
 import { MaterialComponent } from './material';
 import { AboutComponent } from './about';
 import { NoContentComponent } from './no-content';
@@ -23,7 +26,8 @@ import { NoContentComponent } from './no-content';
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
-  AppState
+  AppState,
+  DatasetService
 ];
 
 /**
@@ -34,8 +38,8 @@ const APP_PROVIDERS = [
   declarations: [
     AppComponent,
     AboutComponent,
-    HomeComponent,
-    DataDialog,
+    DatasetComponent,
+    DatasetDialog,
     MaterialComponent,
     NoContentComponent,
   ],
@@ -51,7 +55,7 @@ const APP_PROVIDERS = [
     APP_PROVIDERS
 ],
 entryComponents: [
-    DataDialog
+    DatasetDialog
   ],
 })
 export class AppModule {}

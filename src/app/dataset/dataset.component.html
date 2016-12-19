@@ -7,7 +7,18 @@
 
 
 <md-card *ngFor="let data of datas">
-{{data.name}}
+<!-- <md-card-content>
+    <span>{{data.name}}</span>
+</md-card-content>
+<md-card-actions>
+    <button style="float:right" md-button>Upload</button>
+</md-card-actions> -->
+   <md-card-title><span>{{data.name}}</span></md-card-title>
+   <md-card-actions [style.padding-left.px]="8">
+        <button md-button>Upload</button>
+        <button md-button>Edit</button>
+        <button md-button>Delete</button>
+   </md-card-actions>
 </md-card>
 
 

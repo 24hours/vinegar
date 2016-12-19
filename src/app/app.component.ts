@@ -13,7 +13,7 @@ export class AppComponent {
     url = 'https://twitter.com/AngularClass';
 
     private menus: Array<any> = [
-        {name: "Home", icon: "home", link: "home"},
+        {name: "Dataset", icon: "home", link: "dataset"},
         {name: "Material", icon: "view_agenda", link: "material"},
 
     ]

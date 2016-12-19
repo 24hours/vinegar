@@ -1,0 +1,24 @@
+<h3 md-dialog-title>New Data</h3>
+<div [style.width.px]="width">
+    <div>
+        <md-input   style="width:100%"
+                    [dividerColor]="dColor"
+                    [(ngModel)]="dataName"
+                    (ngModelChange)="dColor=''"
+                    [style.margin-bottom.em]="1"
+                    placeholder="Name">
+            <md-hint *ngIf="dColor=='warn'" align="end">Set Input Name before upload</md-hint>
+        </md-input>
+    </div>
+    <!-- <div [class.nv-file-over]="allowDrop"
+        (drop)="fileDrop($event)"
+        (dragover)="dragover($event);allowDrop=true"
+        (dragleave)="allowDrop=false"
+        class="drop-zone my-drop-zone">
+        <md-icon>file_upload</md-icon>
+        <div>Drop file here</div>
+    </div> -->
+</div>
+<div md-dialog-actions>
+    <button md-raised-button (click)="create()" color="primary">Create</button>
+</div>
