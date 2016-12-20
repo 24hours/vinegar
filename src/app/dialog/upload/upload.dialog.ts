@@ -5,41 +5,30 @@ import { Http } from '@angular/http';
 import { DatasetService } from '../../dataset/dataset.service';
 
 @Component({
-    selector: 'dataset-dialog',
-    templateUrl: './dataset.dialog.html',
-    styleUrls: [ './dataset.dialog.css' ]
+    selector: 'upload-dialog',
+    templateUrl: './upload.dialog.html',
+    styleUrls: [ './upload.dialog.css' ]
 })
-export class DatasetDialog {
+export class UploadDialog {
+    private id: string = "";
     private allowDrop: boolean = false;
     private dataName: string = "";
-    private dColor: string = "";
     private height: number = 0;
     private width: number = 0;
 
     constructor(private _state: AppState,
-                public dialogRef: MdDialogRef<DatasetDialog>,
+                public dialogRef: MdDialogRef<UploadDialog>,
                 private _data: DatasetService) { }
 
     ngOnInit(){
         this.height = Math.min(400, window.innerHeight * .7);
         this.width = Math.min(400, window.innerWidth * .7);
         this.dataName = '';
-        this.dColor = 'primary';
-    }
-
-    create(){
-        if(this.dataName.length == 0){
-            this.dColor = 'warn';
-        } else {
-            this._data.create(this.dataName).subscribe(
-                ()=>{
-                    this._state.notifyDataChanged("data.refresh", true)
-                },
-                (v: any)=>{
-                        console.log("something is wrong", v)
-                }
-            );
-        }
+        console.log("open")
+        this._state.subscribe('upload.data', (v:any)=>{
+            this.dataName = v.name;
+            this.id = v.id;
+        })
     }
 
     dragover($event){
@@ -51,8 +40,8 @@ export class DatasetDialog {
         $event.stopPropagation();
         $event.preventDefault();
         this.allowDrop = false;
-        if(this.dataName.length == 0){
-            this.dColor = 'warn';
+        if(this.id == ""){
+            console.error("dataset id is not specificed for upload")
         } else {
             $event.dataTransfer.getFilesAndDirectories().then((filesAndDirs)=>{
                 this.iterateFilesAndDirs(filesAndDirs, '/');
@@ -76,11 +65,8 @@ export class DatasetDialog {
 
     private uploadFile(file, path) {
         let form = new FormData();
-        form.append('id', 3)
         form.append('path', path)
         form.append("file", file);
-        // this._http.post('http://localhost:8080/data/upload', form)
-        //     .map(resp => {})
-        //     .subscribe(()=>{})
+        this._data.upload(this.id, form).subscribe(()=>{});
     };
 }

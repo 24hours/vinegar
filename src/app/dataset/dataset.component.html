@@ -1,21 +1,7 @@
-<!-- <md-grid-list cols="2" [style.background]="'lightblue'" gutterSize="2px">
-   <md-grid-tile>One</md-grid-tile>
-   <md-grid-tile>Two</md-grid-tile>
-   <md-grid-tile>Three</md-grid-tile>
-   <md-grid-tile>Four</md-grid-tile>
-</md-grid-list> -->
-
-
 <md-card *ngFor="let data of datas">
-<!-- <md-card-content>
-    <span>{{data.name}}</span>
-</md-card-content>
-<md-card-actions>
-    <button style="float:right" md-button>Upload</button>
-</md-card-actions> -->
    <md-card-title><span>{{data.name}}</span></md-card-title>
    <md-card-actions [style.padding-left.px]="8">
-        <button md-button>Upload</button>
+        <button md-button (click)="openUploadDialog(data.id, data.name)">Upload</button>
         <button md-button>Edit</button>
         <button md-button>Delete</button>
    </md-card-actions>
@@ -24,5 +10,5 @@
 
 
 <span class="app-action" [class.m2app-dark]="isDarkTheme">
-  <button md-fab (click)="openDialog()"><md-icon>add</md-icon></button>
+  <button md-fab (click)="openCreateDialog()"><md-icon>add</md-icon></button>
 </span>

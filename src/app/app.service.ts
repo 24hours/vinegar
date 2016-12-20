@@ -12,18 +12,26 @@ export class AppState {
         let subscribers = this._state.get(event);
         if(subscribers !== undefined){
             subscribers.next(value);
+        } else {
+            subscribers = new BehaviorSubject<any>(value);
+            this._state.set(event, subscribers);
         }
     }
 
     subscribe(event: string, callback: Function) {
         let subscribers = this._state.get(event);
         if(subscribers === undefined){
-            subscribers = new Subject<any>();
+            subscribers = new BehaviorSubject<any>(null);
             this._state.set(event, subscribers);
         }
 
-        return (subscribers.asObservable()).subscribe((value: any) => {
-            callback.call(null, value);
-        });
+        return subscribers
+                .filter((v: any)=> {
+                    return v !== null
+                })
+                .subscribe((value: any) => {
+
+                    callback.call(null, value);
+                });
     }
 }

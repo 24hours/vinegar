@@ -1,0 +1,11 @@
+<h3 md-dialog-title>{{ dataName }}</h3>
+<div [style.width.px]="width">
+    <div [class.nv-file-over]="allowDrop"
+        (drop)="fileDrop($event)"
+        (dragover)="dragover($event);allowDrop=true"
+        (dragleave)="allowDrop=false"
+        class="drop-zone my-drop-zone">
+        <md-icon>file_upload</md-icon>
+        <div>Drop file here</div>
+    </div>
+</div>

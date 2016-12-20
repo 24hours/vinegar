@@ -4,6 +4,7 @@ import { Http, RequestOptionsArgs, Headers } from '@angular/http';
 import { DatasetService } from './dataset.service';
 import { AppState } from '../app.service';
 import { DatasetDialog } from '../dialog/dataset/dataset.dialog';
+import { UploadDialog } from '../dialog/upload/upload.dialog';
 
 @Component({
   selector: 'dataset',
@@ -19,7 +20,6 @@ export class DatasetComponent {
                 private _data: DatasetService) { }
 
     ngOnInit(){
-        this.openDialog();
         this._state.subscribe('data.refresh', ()=>{
             this._data.getDataset().subscribe((data: any)=>{
                 this.datas = data['data'];
@@ -28,13 +28,23 @@ export class DatasetComponent {
         this._state.notifyDataChanged("data.refresh", true)
     }
 
-    openDialog() {
+    openCreateDialog() {
         let dialogRef = this.dialog.open(DatasetDialog, {
             disableClose: false
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            console.log('result: ' + result);
+            dialogRef = null;
+        });
+    }
+
+    openUploadDialog(id: string | number, name: string) {
+        let dialogRef = this.dialog.open(UploadDialog, {
+            disableClose: false
+        });
+        this._state.notifyDataChanged('upload.data', {id:id, name:name});
+
+        dialogRef.afterClosed().subscribe(result => {
             dialogRef = null;
         });
     }

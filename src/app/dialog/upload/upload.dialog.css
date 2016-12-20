@@ -1,0 +1,15 @@
+
+.drop-zone {
+    height: 80%;
+    text-align: center;
+    color: lightgray;
+    font-size: 3em;
+}
+
+.my-drop-zone {
+    border: dashed 2px lightgray;
+}
+
+.nv-file-over {
+    border: dashed 2px lightgreen;
+}
