@@ -1,34 +1,18 @@
-<!-- <span *ngFor="let data of datas">{{data.name}}</span> -->
-<div #stage [style.height.px]="height" style="display:flex;flex-direction:row;background:red" >
+<div #stage
+    [style.height.px]="height"
+    style="display:flex;flex-direction:row;">
+
     <div style="width:100px;flex:1 0 0;overflow-y:scroll">
         <md-grid-list cols="1"  gutterSize="4px">
-           <md-grid-tile [style.background]="'lightblue'">One</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Four</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Two</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Three</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">One</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Four</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Two</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Three</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">One</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Four</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Two</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Three</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">One</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Four</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Two</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Three</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">One</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Four</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Two</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Three</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">One</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Four</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Two</md-grid-tile>
-           <md-grid-tile [style.background]="'lightblue'">Three</md-grid-tile>
+           <md-grid-tile    *ngFor="let data of datas; let i = index"
+                            [class.highlight]="selected_index == i"
+                            (click)="selected = data; selected_index = i">
+               <img style="max-height:100%;max-width:100%"
+                    src="http://localhost:8080/{{data.path}}"/>
+           </md-grid-tile>
         </md-grid-list>
     </div>
-    <div style="background:green;flex:5 0 0">
-        sdsd
+    <div style="flex:5 0 0;display:flex;align-items:center">
+        <img style="max-height:100%;max-width:100%" src="http://localhost:8080/{{selected.path}}"/>
     </div>
 </div>
