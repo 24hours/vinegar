@@ -8,3 +8,7 @@ md-card {
   bottom: 20px;
   right: 20px;
 }
+
+.app-content {
+  padding: 20px;
+}

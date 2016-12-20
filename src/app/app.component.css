@@ -2,14 +2,6 @@ md-sidenav-layout.m2app-dark {
   background: black;
 }
 
-.app-content {
-  padding: 20px;
-}
-
-.app-content md-card {
-  margin: 20px;
-}
-
 .app-sidenav {
   padding: 10px;
   min-width: 200px;
