@@ -20,7 +20,7 @@ export class DatasetComponent {
                 private _data: DatasetService) { }
 
     ngOnInit(){
-        this._state.subscribe('data.refresh', ()=>{
+        this.stateListener = this._state.subscribe('data.refresh', ()=>{
             this._data.getDataset().subscribe((data: any)=>{
                 this.datas = data['data'];
             }, (error)=>{})

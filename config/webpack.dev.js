@@ -82,6 +82,7 @@ module.exports = function (options) {
 
       library: 'ac_[name]',
       libraryTarget: 'var',
+      publicPath: '/',
     },
 
     plugins: [
