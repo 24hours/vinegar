@@ -13,6 +13,9 @@
         </md-grid-list>
     </div>
     <div style="flex:5 0 0;display:flex;align-items:center">
-        <img style="max-height:100%;max-width:100%" src="http://localhost:8080/{{selected.path}}"/>
+        <div style="position:relative">
+            <img #image (load)="updateImageDimension()" style="max-height:100%;max-width:100%" src="http://localhost:8080/{{selected.path}}"/>
+            <box #label></box>
+        </div>
     </div>
 </div>

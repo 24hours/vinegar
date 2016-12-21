@@ -21,6 +21,7 @@ import { DatasetService } from './dataset/dataset.service';
 import { DataService } from './data/data.service';
 import { DatasetDialog } from './dialog/dataset/dataset.dialog';
 import { UploadDialog } from './dialog/upload/upload.dialog';
+import { BoxComponent } from './label/box/box.component';
 
 import { MaterialComponent } from './material';
 import { AboutComponent } from './about';
@@ -43,6 +44,7 @@ const APP_PROVIDERS = [
         DataComponent,
         DatasetDialog,
         UploadDialog,
+        BoxComponent,
         MaterialComponent,
         NoContentComponent,
     ],

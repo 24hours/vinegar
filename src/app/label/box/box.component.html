@@ -1,0 +1,9 @@
+<div    style="user-select:none"
+        (click)="addRect($event)"
+        tabindex=1
+        (keydown.backspace)="delete($event)"
+        [style.transform]="'scale('+ scale + ')'"
+        [style.transform-origin]="'top left'"
+        style="position:absolute;top:0px">
+    <canvas #canvas></canvas>
+</div>
