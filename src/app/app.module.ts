@@ -19,6 +19,8 @@ import { DatasetComponent } from './dataset/dataset.component';
 import { DataComponent } from './data/data.component';
 import { DatasetService } from './dataset/dataset.service';
 import { DataService } from './data/data.service';
+import { LabelService } from './label/label.service';
+
 import { DatasetDialog } from './dialog/dataset/dataset.dialog';
 import { UploadDialog } from './dialog/upload/upload.dialog';
 import { LabelDialog } from './dialog/label/label.dialog';
@@ -33,7 +35,8 @@ const APP_PROVIDERS = [
     ...APP_RESOLVER_PROVIDERS,
     AppState,
     DatasetService,
-    DataService
+    DataService,
+    LabelService
 ];
 
 @NgModule({
