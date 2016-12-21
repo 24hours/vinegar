@@ -5,6 +5,7 @@ import { AppState } from '../app.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { DataService } from './data.service';
 import { Label } from '../label/label.class';
+import { LabelDialog } from '../dialog/label/label.dialog';
 
 @Component({
   selector: 'data',
@@ -31,6 +32,7 @@ export class DataComponent {
     constructor(private _state: AppState,
                 private route: ActivatedRoute,
                 private router: Router,
+                private dialog: MdDialog,
                 private _data: DataService) { }
 
     ngOnInit(){
@@ -82,6 +84,16 @@ export class DataComponent {
     private _updateHeight(){
         let dim = this.stage.nativeElement.getBoundingClientRect()
         this.height = window.innerHeight - dim.top;
+    }
+
+    openLabelDialog() {
+        let dialogRef = this.dialog.open(LabelDialog, {
+            disableClose: false
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            dialogRef = null;
+        });
     }
 
     ngOnDestroy(){

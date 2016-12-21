@@ -21,6 +21,7 @@ import { DatasetService } from './dataset/dataset.service';
 import { DataService } from './data/data.service';
 import { DatasetDialog } from './dialog/dataset/dataset.dialog';
 import { UploadDialog } from './dialog/upload/upload.dialog';
+import { LabelDialog } from './dialog/label/label.dialog';
 import { BoxComponent } from './label/box/box.component';
 
 import { MaterialComponent } from './material';
@@ -44,6 +45,8 @@ const APP_PROVIDERS = [
         DataComponent,
         DatasetDialog,
         UploadDialog,
+        LabelDialog,
+
         BoxComponent,
         MaterialComponent,
         NoContentComponent,
@@ -61,7 +64,8 @@ const APP_PROVIDERS = [
     ],
     entryComponents: [
         DatasetDialog,
-        UploadDialog
+        UploadDialog,
+        LabelDialog
     ],
 })
 export class AppModule {}
