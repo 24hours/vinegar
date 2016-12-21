@@ -37,7 +37,7 @@ export class LabelDialog {
         } else {
             this.dialogRef.close();
 
-            this._label.attach(this.id, this.dataName).subscribe(
+            this._label.attach(this.dataName, this.id).subscribe(
                 ()=>{
                     this._state.notifyDataChanged("label.refresh", true);
                     this.dialogRef.close();
