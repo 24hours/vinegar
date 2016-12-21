@@ -45,6 +45,7 @@ export class UploadDialog {
         } else {
             $event.dataTransfer.getFilesAndDirectories().then((filesAndDirs)=>{
                 this.iterateFilesAndDirs(filesAndDirs, '/');
+                this.dialogRef.close()
             });
         }
     }
