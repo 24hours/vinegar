@@ -50,7 +50,9 @@ export class DataComponent {
             });
             this._label.get(this.id).subscribe((v:any)=>{
                 this.labels = v['data'];
-                this.labelId = this.labels[0].id;
+                if(this.labels.length != 0){
+                    this.labelId = this.labels[0].id;                    
+                }
             },()=>{});
         });
 
