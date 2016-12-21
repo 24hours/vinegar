@@ -4,6 +4,7 @@ import { Http, RequestOptionsArgs, Headers } from '@angular/http';
 import { AppState } from '../app.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { DataService } from './data.service';
+import { LabelService } from '../label/label.service';
 import { Label } from '../label/label.class';
 import { LabelDialog } from '../dialog/label/label.dialog';
 
@@ -16,10 +17,14 @@ export class DataComponent {
     private datas: Array<any> = []
     private id: any;
     private sub: any;
+    private sub2: any;
+
     @ViewChild('stage') stage: ElementRef;
     @ViewChild('image') image: ElementRef;
     @ViewChild('label') label: Label;
 
+    private labelId: string;
+    private labels: Array<any>;
     private height: number = 0;
     private selected: any = {};
     private selected_index: number = 0;
@@ -33,7 +38,8 @@ export class DataComponent {
                 private route: ActivatedRoute,
                 private router: Router,
                 private dialog: MdDialog,
-                private _data: DataService) { }
+                private _data: DataService,
+                private _label: LabelService) { }
 
     ngOnInit(){
         this.sub = this.route.params.subscribe(params => {
@@ -41,7 +47,19 @@ export class DataComponent {
             this._data.getData(this.id).subscribe((v: any)=>{
                 this.datas = v['data'];
                 this.selected = this.datas[this.selected_index];
-            })
+            });
+            this._label.get(this.id).subscribe((v:any)=>{
+                this.labels = v['data'];
+                this.labelId = this.labels[0].id;
+            },()=>{});
+        });
+
+        this.sub2 = this._state.subscribe('label.refresh', ()=>{
+            if(this.id){
+                this._label.get(this.id).subscribe((v:any)=>{
+                    this.labels = v['data'];
+                },()=>{});
+            }
         });
     }
 
@@ -54,6 +72,10 @@ export class DataComponent {
     previous(){
         this.selected_index = Math.max(0, this.selected_index-1);
         this.selected = this.datas[this.selected_index];
+    }
+
+    reloadLabel(){
+        console.log('reload label', this.labelId)
     }
 
     ngAfterViewInit(){
@@ -91,6 +113,8 @@ export class DataComponent {
             disableClose: false
         });
 
+        this._state.notifyDataChanged('label.data', {id:this.id});
+
         dialogRef.afterClosed().subscribe(result => {
             dialogRef = null;
         });
@@ -98,5 +122,6 @@ export class DataComponent {
 
     ngOnDestroy(){
         this.sub.unsubscribe();
+        this.sub2.unsubscribe();
     }
 }

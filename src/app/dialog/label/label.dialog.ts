@@ -15,6 +15,7 @@ export class LabelDialog {
     private dColor: string = "";
     private height: number = 0;
     private width: number = 0;
+    private sub: any;
 
     constructor(private _state: AppState,
                 public dialogRef: MdDialogRef<LabelDialog>,
@@ -24,7 +25,7 @@ export class LabelDialog {
         this.height = Math.min(400, window.innerHeight * .7);
         this.width = Math.min(400, window.innerWidth * .7);
         this.dataName = '';
-        this._state.subscribe('upload.data', (v:any)=>{
+        this.sub = this._state.subscribe('label.data', (v:any)=>{
             this.dataName = v.name;
             this.id = v.id;
         })
@@ -35,17 +36,21 @@ export class LabelDialog {
             this.dColor = 'warn';
         } else {
             this.dialogRef.close();
-            //
-            // this._data.create(this.dataName).subscribe(
-            //     ()=>{
-            //         // this._state.notifyDataChanged("data.refresh", true);
-            //         this.dialogRef.close();
-            //     },
-            //     (v: any)=>{
-            //             console.log("something is wrong", v)
-            //     }
-            // );
+
+            this._label.attach(this.id, this.dataName).subscribe(
+                ()=>{
+                    this._state.notifyDataChanged("label.refresh", true);
+                    this.dialogRef.close();
+                },
+                (v: any)=>{
+                    console.log("something is wrong", v)
+                }
+            );
         }
+    }
+
+    ngOnDestroy(){
+        this.sub.unsubscribe();
     }
 
 }

@@ -4,12 +4,8 @@
             <md-icon class="md-24">add</md-icon>
         </button>
     </div>
-    <md-select placeholder="Label">
-      <md-option>1</md-option>
-      <md-option>1</md-option>
-      <md-option>1</md-option>
-      <md-option>1</md-option>
-
+    <md-select placeholder="Label" [(ngModel)]="labelId" (ngModelChange)="reloadLabel()">
+      <md-option *ngFor="let label of labels" [value]="label.id">{{label.name}}</md-option>
     </md-select>
 </md-toolbar>
 <div #stage
