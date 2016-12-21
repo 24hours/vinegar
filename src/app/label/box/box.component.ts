@@ -23,6 +23,20 @@ export class BoxComponent extends Label {
 
     @ViewChild('canvas') canvas: ElementRef;
 
+    private initStage(){
+        if(!this.stage){
+            this.stage = new fabric.Canvas(this.canvas.nativeElement);
+            this.stage.on("object:scaling", (e: any)=> {
+                e.target.setWidth(e.target.width * e.target.scaleX);
+                e.target.setScaleX(1);
+                e.target.setHeight(e.target.height * e.target.scaleY);
+                e.target.setScaleY(1);
+            });
+        } else {
+            this.stage.clear();
+        }
+    }
+
     load(height: number, width: number, scale: number){
         this.height = height;
         this.width = width;
@@ -30,15 +44,7 @@ export class BoxComponent extends Label {
 
         this.canvas.nativeElement.setAttribute('height', this.height);
         this.canvas.nativeElement.setAttribute('width', this.width);
-
-        this.stage = new fabric.Canvas(this.canvas.nativeElement);
-
-        this.stage.on("object:scaling", (e: any)=> {
-            e.target.setWidth(e.target.width * e.target.scaleX);
-            e.target.setScaleX(1);
-            e.target.setHeight(e.target.height * e.target.scaleY);
-            e.target.setScaleY(1);
-        });
+        this.initStage();
     }
 
     delete(e: any){
