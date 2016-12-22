@@ -31,8 +31,11 @@ export class BoxComponent extends Label {
     @Input()
     set data(d: string) {
         if(d){
-            this._data = JSON.parse(d);
-            this._reloadLabel();
+            let _d = JSON.parse(d);
+            if(!_.isEqual(_d, this._data)){
+                this._data = _d;
+                this._reloadLabel();
+            }
         } else {
             this._data = [];
         }
@@ -98,6 +101,7 @@ export class BoxComponent extends Label {
             return {x: o.left, y: o.top, w: o.width, h:o.height, theta: o.angle || 0};
         });
 
+        this._data = obj;
         this.change.emit(obj);
     }
 
