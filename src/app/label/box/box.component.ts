@@ -32,6 +32,8 @@ export class BoxComponent extends Label {
         if(d){
             this._data = JSON.parse(d);
             this._reloadLabel();
+        } else {
+            this._data = [];
         }
     }
 
