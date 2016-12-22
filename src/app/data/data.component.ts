@@ -132,9 +132,12 @@ export class DataComponent {
     }
 
     saveData(data: any){
+        var id = this.selected.id;
         if(this.selected.id && this.labelId){
-            this._data.saveData(data, this.selected.id, this.labelId).subscribe((v: any)=>{
-
+            this._data.saveData(data, this.selected.id, this.labelId)
+            .subscribe((v: any)=>{
+                _.extend(   _.find(this.datas, (v: any)=>{ return v.id == id }),
+                            {label: JSON.stringify(data)});
             }, (e: any)=>{
                 console.error(e)
             })
