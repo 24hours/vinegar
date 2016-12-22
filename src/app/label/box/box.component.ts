@@ -90,7 +90,6 @@ export class BoxComponent extends Label {
         });
 
         this.change.emit(obj);
-        console.log("emit")
     }
 
     load(height: number, width: number, scale: number){

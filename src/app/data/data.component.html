@@ -12,16 +12,24 @@
     [style.height.px]="height"
     style="display:flex;flex-direction:row;">
 
-    <div style="width:100px;flex:1 0 0;overflow-y:scroll">
-        <md-grid-list cols="1"  gutterSize="4px">
-           <md-grid-tile    *ngFor="let data of datas; let i = index"
-                            [class.highlight]="selected_index == i"
-                            (click)="selected = data; selected_index = i">
-               <img style="max-height:100%;max-width:100%"
-                    src="http://localhost:8080/{{data.path}}"/>
-           </md-grid-tile>
-        </md-grid-list>
-    </div>
+    <!-- <div style="width:100px;flex:1 0 0;overflow-y:scroll"> -->
+        <virtual-scroll style="width:100px;flex:1 0 0"
+                        [items]="datas"
+                        (update)="_datas = $event"
+                        [childHeight]="100"
+                        (change)="updateIndex($event)">
+            <!-- <list-item *ngFor="let item of viewPortItems" [item]="item">
+            </list-item> -->
+            <md-grid-list cols="1"  gutterSize="4px">
+               <md-grid-tile    *ngFor="let data of _datas; let i = index"
+                                [class.highlight]="selected_index == start + i"
+                                (click)="selected = data; selected_index = start + i">
+                   <img style="max-height:100%;max-width:100%"
+                        src="http://localhost:8080/{{data.path}}"/>
+               </md-grid-tile>
+            </md-grid-list>
+        </virtual-scroll>
+    <!-- </div> -->
     <div style="flex:5 0 0;display:flex;align-items:center">
         <div style="position:relative">
             <img #image (load)="updateImageDimension()" style="max-height:100%;max-width:100%" src="http://localhost:8080/{{selected.path}}"/>

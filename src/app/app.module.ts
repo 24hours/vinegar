@@ -30,6 +30,8 @@ import { MaterialComponent } from './material';
 import { AboutComponent } from './about';
 import { NoContentComponent } from './no-content';
 
+import { VirtualScrollModule } from 'angular2-virtual-scroll';
+
 // Application wide providers
 const APP_PROVIDERS = [
     ...APP_RESOLVER_PROVIDERS,
@@ -60,6 +62,7 @@ const APP_PROVIDERS = [
         HttpModule,
         RouterModule.forRoot(ROUTES, { preloadingStrategy: PreloadAllModules }),
         MaterialModule.forRoot(),
+        VirtualScrollModule,
     ],
     providers: [ // expose our Services and Providers into Angular's dependency injection
         ENV_PROVIDERS,

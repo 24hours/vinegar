@@ -15,7 +15,9 @@ import * as _ from 'lodash';
   templateUrl: './data.component.html'
 })
 export class DataComponent {
-    private datas: Array<any> = []
+    private datas: Array<any> = [];
+    private _datas: Array<any> = [];
+
     private id: any;
     private sub: any;
     private sub2: any;
@@ -29,7 +31,7 @@ export class DataComponent {
     private height: number = 0;
     private selected: any = {};
     private selected_index: number = 0;
-
+    private start = 0;
     private imageWidth: number = 0;
     private imageHeight: number = 0;
     private domWidth: number = 0;
@@ -132,9 +134,15 @@ export class DataComponent {
     saveData(data: any){
         if(this.selected.id && this.labelId){
             this._data.saveData(data, this.selected.id, this.labelId).subscribe((v: any)=>{
-                console.log(v)
-            }, ()=>{})
+
+            }, (e: any)=>{
+                console.error(e)
+            })
         }
+    }
+
+    updateIndex(e: any){
+        this.start = e.start;
     }
 
     ngOnDestroy(){
