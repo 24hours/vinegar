@@ -23,6 +23,7 @@ export class BoxComponent extends Label {
 
     private selected: boolean;
     private _data: any;
+    private suppressEvent: boolean = false;
 
     @ViewChild('canvas') canvas: ElementRef;
     @Output() change: EventEmitter<any> = new EventEmitter<any>();
@@ -49,11 +50,15 @@ export class BoxComponent extends Label {
                 e.target.setScaleY(1);
             });
             this.stage.on("object:modified", (e: any)=>{
-                this._collectObject();
+                if(!this.suppressEvent){
+                    this._collectObject();
+                }
             });
 
             this.stage.on("object:added", (e: any)=>{
-                this._collectObject();
+                if(!this.suppressEvent){
+                    this._collectObject();
+                }
             });
         } else {
             this.stage.clear();
@@ -64,9 +69,11 @@ export class BoxComponent extends Label {
     private _reloadLabel(){
         if(this.stage){
             this.stage.clear();
+            this.suppressEvent = true;
             _.each(this._data, (v: any)=>{
                 this._addRect(v.x, v.y, v.w, v.h, v.theta || 0)
             });
+            this.suppressEvent = false;
         }
     }
 

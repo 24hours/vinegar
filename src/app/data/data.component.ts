@@ -1,5 +1,5 @@
 import { Component, Optional, ElementRef, ViewChild, HostListener } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MdDialog, MdDialogRef, MdSnackBar} from '@angular/material';
 import { Http, RequestOptionsArgs, Headers } from '@angular/http';
 import { AppState } from '../app.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -42,7 +42,8 @@ export class DataComponent {
                 private router: Router,
                 private dialog: MdDialog,
                 private _data: DataService,
-                private _label: LabelService) { }
+                private _label: LabelService,
+                private _snack: MdSnackBar) { }
 
     ngOnInit(){
         this.sub = this.route.params.subscribe(params => {
@@ -140,7 +141,9 @@ export class DataComponent {
                             {label: JSON.stringify(data)});
             }, (e: any)=>{
                 console.error(e)
-            })
+            });
+        } else {
+            this._snack.open('Failed to save label information because Label is not selected')
         }
     }
 
