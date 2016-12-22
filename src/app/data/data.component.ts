@@ -7,6 +7,7 @@ import { DataService } from './data.service';
 import { LabelService } from '../label/label.service';
 import { Label } from '../label/label.class';
 import { LabelDialog } from '../dialog/label/label.dialog';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'data',
@@ -23,7 +24,7 @@ export class DataComponent {
     @ViewChild('image') image: ElementRef;
     @ViewChild('label') label: Label;
 
-    private labelId: string;
+    private labelId: number;
     private labels: Array<any>;
     private height: number = 0;
     private selected: any = {};
@@ -47,11 +48,12 @@ export class DataComponent {
             this._data.getData(this.id).subscribe((v: any)=>{
                 this.datas = v['data'];
                 this.selected = this.datas[this.selected_index];
+                this.reloadLabel();
             });
             this._label.get(this.id).subscribe((v:any)=>{
                 this.labels = v['data'];
                 if(this.labels.length != 0){
-                    this.labelId = this.labels[0].id;                    
+                    this.labelId = +this.labels[0].id;
                 }
             },()=>{});
         });
@@ -76,8 +78,13 @@ export class DataComponent {
         this.selected = this.datas[this.selected_index];
     }
 
-    reloadLabel(){
-        console.log('reload label', this.labelId)
+    private reloadLabel(){
+        this._data.getLabel(this.id).subscribe((label: any)=>{
+            let lbl = label['data'];
+            this.datas = _.map(this.datas, (item)=>{
+                return _.extend(item, _.find(lbl, (v: any)=>{ return v.id == item.id }));
+            });
+        }, ()=>{})
     }
 
     ngAfterViewInit(){
@@ -120,6 +127,14 @@ export class DataComponent {
         dialogRef.afterClosed().subscribe(result => {
             dialogRef = null;
         });
+    }
+
+    saveData(data: any){
+        if(this.selected.id && this.labelId){
+            this._data.saveData(data, this.selected.id, this.labelId).subscribe((v: any)=>{
+                console.log(v)
+            }, ()=>{})
+        }
     }
 
     ngOnDestroy(){

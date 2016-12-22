@@ -1,10 +1,12 @@
-import { Component, Optional, ElementRef, ViewChild, HostListener } from '@angular/core';
+import {    Component, Optional, ElementRef, ViewChild,
+            HostListener, Input, Output, EventEmitter } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { Http, RequestOptionsArgs, Headers } from '@angular/http';
 import { AppState } from '../app.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { DataService } from './data.service';
 import { Label } from '../label.class';
+import * as _ from 'lodash';
 import 'fabric';
 declare var fabric: any;
 
@@ -20,8 +22,20 @@ export class BoxComponent extends Label {
     private stage: any;
 
     private selected: boolean;
+    private _data: any;
 
     @ViewChild('canvas') canvas: ElementRef;
+    @Output() change: EventEmitter<any> = new EventEmitter<any>();
+
+    @Input()
+    set data(d: string) {
+        if(d){
+            this._data = JSON.parse(d);
+            this._reloadLabel();
+        }
+    }
+
+    get data(): string { return this._data; }
 
     private initStage(){
         if(!this.stage){
@@ -32,9 +46,51 @@ export class BoxComponent extends Label {
                 e.target.setHeight(e.target.height * e.target.scaleY);
                 e.target.setScaleY(1);
             });
+            this.stage.on("object:modified", (e: any)=>{
+                this._collectObject();
+            });
+
+            this.stage.on("object:added", (e: any)=>{
+                this._collectObject();
+            });
         } else {
             this.stage.clear();
         }
+        this._reloadLabel();
+    }
+
+    private _reloadLabel(){
+        if(this.stage){
+            this.stage.clear();
+            _.each(this._data, (v: any)=>{
+                this._addRect(v.x, v.y, v.w, v.h, v.theta || 0)
+            });
+        }
+    }
+
+    private _addRect(x:number , y:number, w=10, h=10, theta=0) {
+        this.stage.add(new fabric.Rect({
+           left: x,
+           top: y,
+           width: w,
+           height: h,
+           stroke: 'yellow',
+           strokeWidth: 2,
+           angle: theta,
+           fill: 'rgba(0,0,0,0)',
+           cornerColor: 'yellow',
+           cornerSize: 18,
+           transparentCorners: false
+       }));
+    }
+
+    private _collectObject(){
+        let obj = this.stage.getObjects().map((o: any)=>{
+            return {x: o.left, y: o.top, w: o.width, h:o.height, theta: o.angle || 0};
+        });
+
+        this.change.emit(obj);
+        console.log("emit")
     }
 
     load(height: number, width: number, scale: number){
@@ -49,6 +105,7 @@ export class BoxComponent extends Label {
 
     delete(e: any){
         this.stage.remove(this.stage.getActiveObject())
+        this._collectObject();
     }
 
     addRect($event) {
