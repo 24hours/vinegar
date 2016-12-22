@@ -1,10 +1,11 @@
 import { Component, Optional, ElementRef, ViewChild, HostListener } from '@angular/core';
-import { MdDialog, MdDialogRef, MdSnackBar} from '@angular/material';
+import { MdDialog, MdDialogRef, MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { Http, RequestOptionsArgs, Headers } from '@angular/http';
 import { AppState } from '../app.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { DataService } from './data.service';
 import { LabelService } from '../label/label.service';
+import { FilterService } from '../filter.service';
 import { Label } from '../label/label.class';
 import { LabelDialog } from '../dialog/label/label.dialog';
 import * as _ from 'lodash';
@@ -17,10 +18,14 @@ import * as _ from 'lodash';
 export class DataComponent {
     private datas: Array<any> = [];
     private _datas: Array<any> = [];
+    private _filterDatas: Array<any> = [];
 
     private id: any;
     private sub: any;
     private sub2: any;
+    private sub3: any;
+    private snackConfig: MdSnackBarConfig = new MdSnackBarConfig();
+    private searchSchedule: any;
 
     @ViewChild('stage') stage: ElementRef;
     @ViewChild('image') image: ElementRef;
@@ -43,13 +48,15 @@ export class DataComponent {
                 private dialog: MdDialog,
                 private _data: DataService,
                 private _label: LabelService,
-                private _snack: MdSnackBar) { }
+                private _snack: MdSnackBar,
+                private _filter: FilterService) { }
 
     ngOnInit(){
         this.sub = this.route.params.subscribe(params => {
             this.id = +params['id'];
             this._data.getData(this.id).subscribe((v: any)=>{
                 this.datas = v['data'];
+                this._filterDatas = this.datas;
                 this.selected = this.datas[this.selected_index];
                 this.reloadLabel();
             });
@@ -68,12 +75,31 @@ export class DataComponent {
                 },()=>{});
             }
         });
+
+        this.snackConfig.duration = 3000;
+        this.sub3 = this._state.subscribe('search.string', (search_tree: any)=>{
+            if(this.searchSchedule){
+                clearTimeout(this.searchSchedule);
+            }
+
+            if(search_tree == -1){
+                this._filterDatas = this.datas;
+            } else {
+                this.searchSchedule = setTimeout(()=>{
+                    this._filterDatas = this._filter.filter(this.datas, search_tree, "image");
+                    this.selected_index = 0;
+                    if(this._filterDatas.length != 0){
+                        this.selected = this._filterDatas[this.selected_index];
+                    }
+                    this._snack.open('Filter: ' + String(this._filterDatas.length) + ' of ' + String(this.datas.length), 'OK', this.snackConfig)
+                }, 500);
+            }
+        });
     }
 
     next(){
-        this.selected_index = Math.min(this.datas.length-1, this.selected_index+1);
+        this.selected_index = Math.min(this._filterDatas.length-1, this.selected_index+1);
         this.selected = this.datas[this.selected_index];
-
     }
 
     previous(){
@@ -154,5 +180,6 @@ export class DataComponent {
     ngOnDestroy(){
         this.sub.unsubscribe();
         this.sub2.unsubscribe();
+        this.sub3.unsubscribe();
     }
 }

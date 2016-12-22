@@ -20,7 +20,13 @@
     Vinegar
 
     <span class="app-toolbar-filler"></span>
-    <button md-button (click)="isDarkTheme = !isDarkTheme">TOGGLE DARK THEME</button>
+    <md-input placeholder="Search" [dividerColor]="filter_valid" [ngModel]="search" (ngModelChange)="emitSearch($event)">
+        <span md-prefix>
+            <i class="material-icons app-input-icon">search</i>
+            &nbsp;
+        </span>
+    </md-input>
+
   </md-toolbar>
 
   <div class="app-content">

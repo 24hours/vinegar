@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import * as PouchDB from 'pouchdb';
 import { AppState } from './app.service';
+var jsep = require('jsep');
 
 @Component({
   selector: 'app',
@@ -8,15 +9,14 @@ import { AppState } from './app.service';
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-    angularclassLogo = 'assets/img/angularclass-avatar.png';
-    name = 'Angular 2 Webpack Starter';
-    url = 'https://twitter.com/AngularClass';
+    private search: string;
+    private filter_valid: string = 'accent';
 
     private menus: Array<any> = [
         {name: "Dataset", icon: "home", link: "dataset"},
         {name: "Material", icon: "view_agenda", link: "material"},
-
     ]
+
     constructor(
         public appState: AppState) {
 
@@ -24,6 +24,21 @@ export class AppComponent {
 
     ngOnInit() {
 
+    }
+
+    emitSearch($event){
+        if($event.length != 0){
+            try{
+                let parse_tree = jsep($event);
+                this.appState.notifyDataChanged("search.string", parse_tree)
+                this.filter_valid = 'accent';
+            } catch (err) {
+                this.filter_valid = 'warn';
+            }
+        } else {
+            this.appState.notifyDataChanged("search.string", -1)
+            this.filter_valid = 'accent';
+        }
     }
 }
 
