@@ -8,6 +8,8 @@ import { LabelService } from '../label/label.service';
 import { FilterService } from '../filter.service';
 import { Label } from '../label/label.class';
 import { LabelDialog } from '../dialog/label/label.dialog';
+import { VirtualScrollComponent } from 'angular2-virtual-scroll';
+
 import * as _ from 'lodash';
 
 @Component({
@@ -30,6 +32,7 @@ export class DataComponent {
     @ViewChild('stage') stage: ElementRef;
     @ViewChild('image') image: ElementRef;
     @ViewChild('label') label: Label;
+    @ViewChild('vs') vs:  VirtualScrollComponent;
 
     private labelId: number;
     private labels: Array<any>;
@@ -90,6 +93,9 @@ export class DataComponent {
                     this.selected_index = 0;
                     if(this._filterDatas.length != 0){
                         this.selected = this._filterDatas[this.selected_index];
+                        setTimeout(()=>{
+                            this.vs.scrollInto(this.selected);
+                        })
                     }
                     this._snack.open('Filter: ' + String(this._filterDatas.length) + ' of ' + String(this.datas.length), 'OK', this.snackConfig)
                 }, 500);
@@ -99,12 +105,18 @@ export class DataComponent {
 
     next(){
         this.selected_index = Math.min(this._filterDatas.length-1, this.selected_index+1);
-        this.selected = this.datas[this.selected_index];
+        this.selected = this._filterDatas[this.selected_index];
+        setTimeout(()=>{
+            this.vs.scrollInto(this.selected);
+        })
     }
 
     previous(){
         this.selected_index = Math.max(0, this.selected_index-1);
-        this.selected = this.datas[this.selected_index];
+        this.selected = this._filterDatas[this.selected_index];
+        setTimeout(()=>{
+            this.vs.scrollInto(this.selected);
+        })
     }
 
     private reloadLabel(){

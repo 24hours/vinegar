@@ -11,7 +11,7 @@
 <div #stage
     [style.height.px]="height"
     style="display:flex;flex-direction:row;">
-    <virtual-scroll style="width:100px;flex:1 0 0"
+    <virtual-scroll #vs style="width:100px;flex:1 0 0"
                     [items]="_filterDatas"
                     (update)="_datas = $event"
                     [childHeight]="100"
